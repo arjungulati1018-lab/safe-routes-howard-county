@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeWalk AI - Howard County Student Safety</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #4895ef;
+            --secondary: #4cc9f0;
+            --success: #4ade80;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --safe: #10b981;
+            --unsafe: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+            --gradient-secondary: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #4cc9f0 100%);
+            --border-radius-lg: 20px;
+            --border-radius-md: 12px;
+            --border-radius-sm: 8px;
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Premium Header with Navigation */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo-text h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .tagline {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        /* Main Navigation */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* User Profile Section */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .user-profile:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .points-badge {
+            background: var(--gradient-warning);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Main Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar with Quick Actions */
+        .sidebar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            height: fit-content;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .section-title i {
+            font-size: 1.2rem;
+        }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-action:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .action-icon.report { background: var(--gradient-warning); }
+        .action-icon.route { background: var(--gradient-success); }
+        .action-icon.game { background: var(--gradient-secondary); }
+        .action-icon.group { background: var(--purple); }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .action-desc {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .temp-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .weather-condition {
+            text-align: center;
+        }
+
+        .condition-icon {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        /* Live Alerts */
+        .alerts-widget {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(133, 100, 4, 0.1);
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-badge {
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Interactive Map Section */
+        .map-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .map-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .map-title i {
+            font-size: 1.5rem;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .live-pulse {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        .map-container {
+            height: 500px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+            border-radius: var(--border-radius-md);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--glass-border);
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 5;
+        }
+
+        .map-btn {
+            background: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .map-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .map-btn.report { color: var(--danger); }
+        .map-btn.route { color: var(--success); }
+        .map-btn.group { color: var(--primary); }
+
+        /* Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            padding: 15px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 5;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Route Planning Panel */
+        .route-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .route-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: var(--primary);
+        }
+
+        .form-input, .form-select {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .location-search {
+            display: flex;
+            gap: 10px;
+        }
+
+        .location-search input {
+            flex: 1;
+        }
+
+        .btn-locate {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            width: 50px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-locate:hover {
+            transform: scale(1.05);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-warning {
+            background: var(--gradient-warning);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon.ai { background: var(--gradient-primary); }
+        .feature-icon.social { background: var(--gradient-secondary); }
+        .feature-icon.game { background: var(--purple); }
+        .feature-icon.rewards { background: var(--gradient-warning); }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Saved Routes Section */
+        .saved-routes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .route-card {
+            background: white;
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .route-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .route-card.featured {
+            border-color: var(--warning);
+            background: linear-gradient(135deg, #fff3cd 0%, #fff 100%);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .route-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .route-safety {
+            background: var(--gradient-success);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .route-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .route-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .route-detail i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .route-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        /* Social Features */
+        .community-section {
+            background: var(--glass-bg);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .walk-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .group-card {
+            background: white;
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .group-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .group-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .group-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Gamification */
+        .gamification-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-size: 1.2rem;
+            font-weight: 700;
+            width: 30px;
+        }
+
+        .rank-1 { color: #FFD700; }
+        .rank-2 { color: #C0C0C0; }
+        .rank-3 { color: #CD7F32; }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius-lg);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .data-partners {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .partner-logo {
+            height: 40px;
+            filter: brightness(0) invert(1);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .main-nav {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .user-section {
+                justify-content: center;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+            
+            .route-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid,
+            .saved-routes,
+            .walk-groups {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .map-container {
+                height: 350px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Premium Header -->
+        <header>
+            <div class="header-content">
+                <a href="#" class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>SafeWalk AI</h1>
+                        <div class="tagline">Howard County • Student Safety Platform</div>
+                    </div>
+                </a>
+
+                <div class="main-nav">
+                    <button class="nav-btn active" data-view="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="nav-btn" data-view="routes">
+                        <i class="fas fa-route"></i>
+                        <span>My Routes</span>
+                    </button>
+                    <button class="nav-btn" data-view="community">
+                        <i class="fas fa-users"></i>
+                        <span>Community</span>
+                    </button>
+                    <button class="nav-btn" data-view="games">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Safety Games</span>
+                    </button>
+                </div>
+
+                <div class="user-section">
+                    <div class="user-profile" id="userProfile">
+                        <div class="user-avatar" id="userAvatar">JD</div>
+                        <div class="user-info">
+                            <div class="user-name" id="userName">Jane Doe</div>
+                            <div class="user-role" id="userRole">Parent</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="points-badge" id="pointsDisplay">
+                        <i class="fas fa-star"></i>
+                        <span>1,250 Points</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Actions -->
+                <div class="sidebar-section">
+                    <div class="section-title">
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+                    </div>
+                    <div class="quick-action" id="quickReport">
+                        <div class="action-icon report">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">Report Hazard</div>
+                            <div class="action-desc">Mark unsafe areas</div>
+                        </div>
+                    </div>
+                    <div class="quick-action" id="quickRoute">
+                        <div class="action-icon route">
+                            <i class="fas fa-directions"></i>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">Plan Route</div>
+                            <div class="action-desc">Find safe path to school</div>
+                        </div>
+                    </div>
+                    <div class="quick-action" id="quickGroup">
+                        <div class="action-icon group">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">Join Walk Group</div>
+                            <div class="action-desc">Walk with neighbors</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Widget -->
+                <div class="weather-widget">
+                    <div class="weather-header">
+                        <div>
+                            <div class="temp-display">72°F</div>
+                            <div>Ellicott City</div>
+                        </div>
+                        <div class="weather-condition">
+                            <div class="condition-icon">☀️</div>
+                            <div>Sunny</div>
+                        </div>
+                    </div>
+                    <div>Perfect walking weather! ☀️</div>
+                </div>
+
+                <!-- Live Alerts -->
+                <div class="alerts-widget">
+                    <div class="alert-header">
+                        <i class="fas fa-bell"></i>
+                        <strong>Live Alerts</strong>
+                    </div>
+                    <div class="alert-item">
+                        <div class="alert-badge"></div>
+                        <div>Road work on Centennial Lane</div>
+                    </div>
+                    <div class="alert-item">
+                        <div class="alert-badge"></div>
+                        <div>Bus delay at River Hill HS</div>
+                    </div>
+                </div>
+
+                <!-- Safety Tips -->
+                <div class="sidebar-section">
+                    <div class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Daily Safety Tip
+                    </div>
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: var(--border-radius-sm);">
+                        <strong>Use designated crosswalks</strong> and wait for the walk signal. Make eye contact with drivers before crossing.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Interactive Map Section -->
+                <div class="map-section">
+                    <div class="map-header">
+                        <div class="map-title">
+                            <i class="fas fa-map-marked-alt"></i>
+                            Howard County Safety Map
+                        </div>
+                        <div class="live-indicator">
+                            <div class="live-pulse"></div>
+                            <span>LIVE DATA</span>
+                        </div>
+                    </div>
+
+                    <div class="map-container" id="mapContainer">
+                        <!-- Map Controls -->
+                        <div class="map-controls">
+                            <button class="map-btn report" id="reportHazardBtn">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Report Hazard
+                            </button>
+                            <button class="map-btn route" id="findRouteBtn">
+                                <i class="fas fa-directions"></i>
+                                Plan Route
+                            </button>
+                            <button class="map-btn group" id="walkGroupBtn">
+                                <i class="fas fa-user-friends"></i>
+                                Find Walk Group
+                            </button>
+                        </div>
+
+                        <!-- Map Overlay -->
+                        <div class="map-overlay" id="mapOverlay">
+                            <div style="max-width: 400px;">
+                                <div class="logo-icon" style="margin: 0 auto 1rem; width: 60px; height: 60px;">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </div>
+                                <h3 style="margin-bottom: 1rem; color: var(--primary);">Interactive Safety Map</h3>
+                                <p style="margin-bottom: 1.5rem; color: var(--gray);">
+                                    See real-time safety data, school locations, and community-reported hazards across Howard County.
+                                </p>
+                                <button class="btn btn-primary" id="startExploringBtn">
+                                    <i class="fas fa-play"></i>
+                                    Start Exploring
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="map-legend">
+                            <div style="font-weight: 600; margin-bottom: 10px; color: var(--primary);">Map Legend</div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: var(--primary); border-radius: 50%;"></div>
+                                    <span style="font-size: 0.9rem;">Schools</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: var(--danger); border-radius: 50%;"></div>
+                                    <span style="font-size: 0.9rem;">Hazards</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: var(--success); border-radius: 50%;"></div>
+                                    <span style="font-size: 0.9rem;">Safe Routes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Planning Panel -->
+                <div class="route-panel">
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-directions"></i>
+                        Plan Your Safe Route
+                    </h2>
+
+                    <div class="route-form">
+                        <div class="form-group">
+                            <label class="form-label" for="startAddress">
+                                <i class="fas fa-home"></i>
+                                Start Address
+                            </label>
+                            <div class="location-search">
+                                <input type="text" id="startAddress" class="form-input" 
+                                       placeholder="Enter your address" 
+                                       value="10000 Clarksville Pike, Ellicott City">
+                                <button class="btn-locate" id="locateMeBtn" title="Use my location">
+                                    <i class="fas fa-location-crosshairs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="schoolSelect">
+                                <i class="fas fa-school"></i>
+                                School Destination
+                            </label>
+                            <select id="schoolSelect" class="form-select">
+                                <option value="">Select a school</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="travelMode">
+                                <i class="fas fa-walking"></i>
+                                Travel Mode
+                            </label>
+                            <select id="travelMode" class="form-select">
+                                <option value="walking">Walking</option>
+                                <option value="biking">Biking</option>
+                                <option value="bus">Bus + Walking</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="studentSelect">
+                                <i class="fas fa-user-graduate"></i>
+                                For Student
+                            </label>
+                            <select id="studentSelect" class="form-select">
+                                <option value="">Select student</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="calculateRouteBtn">
+                            <i class="fas fa-route"></i>
+                            Calculate Safe Route
+                        </button>
+                        <button class="btn btn-success" id="saveRouteBtn" style="display: none;">
+                            <i class="fas fa-save"></i>
+                            Save This Route
+                        </button>
+                        <button class="btn btn-secondary" id="shareRouteBtn" style="display: none;">
+                            <i class="fas fa-share-alt"></i>
+                            Share Route
+                        </button>
+                    </div>
+
+                    <!-- Safety Score Display -->
+                    <div id="safetyScoreDisplay" style="display: none; margin-top: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 15px; background: #f0f9ff; padding: 1rem; border-radius: var(--border-radius-sm);">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--success);">92%</div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--dark);">Safety Score</div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">AI-calculated route safety based on real data</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Features -->
+                <div>
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-crown"></i>
+                        Premium Features
+                    </h2>
+
+                    <div class="features-grid">
+                        <!-- AI Safety Predictions -->
+                        <div class="feature-card" id="aiSafetyFeature">
+                            <div class="feature-icon ai">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="feature-title">AI Safety Predictions</h3>
+                            <p class="feature-desc">
+                                Get real-time safety predictions based on weather, traffic, and historical incident data.
+                            </p>
+                        </div>
+
+                        <!-- Walking School Bus -->
+                        <div class="feature-card" id="walkingBusFeature">
+                            <div class="feature-icon social">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <h3 class="feature-title">Walking School Bus</h3>
+                            <p class="feature-desc">
+                                Join or create walking groups with other families in your neighborhood.
+                            </p>
+                        </div>
+
+                        <!-- Safety Games -->
+                        <div class="feature-card" id="safetyGamesFeature">
+                            <div class="feature-icon game">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3 class="feature-title">Safety Games</h3>
+                            <p class="feature-desc">
+                                Earn points and badges by completing safety challenges and quizzes.
+                            </p>
+                        </div>
+
+                        <!-- Rewards Program -->
+                        <div class="feature-card" id="rewardsFeature">
+                            <div class="feature-icon rewards">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <h3 class="feature-title">Rewards Program</h3>
+                            <p class="feature-desc">
+                                Redeem points for discounts at local businesses and school supplies.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Routes (Initially Hidden) -->
+                <div id="savedRoutesSection" style="display: none;">
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-bookmark"></i>
+                        My Saved Routes
+                    </h2>
+                    <div class="saved-routes" id="savedRoutesContainer">
+                        <!-- Routes will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Community Section (Initially Hidden) -->
+                <div id="communitySection" style="display: none;">
+                    <div class="community-section">
+                        <h2 style="margin-bottom: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-users"></i>
+                            Walking Groups Near You
+                        </h2>
+                        <div class="walk-groups" id="walkGroupsContainer">
+                            <!-- Groups will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gamification Section (Initially Hidden) -->
+                <div id="gamificationSection" style="display: none;">
+                    <div class="gamification-section">
+                        <h2 style="color: white; margin-bottom: 1rem;">Safety Leaderboard</h2>
+                        <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">
+                            Earn points by reporting hazards, walking safely, and completing challenges!
+                        </p>
+                        
+                        <div class="leaderboard">
+                            <div class="leaderboard-item">
+                                <div class="rank rank-1">1</div>
+                                <div class="user-avatar" style="width: 40px; height: 40px;">JD</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">Jane Doe</div>
+                                    <div style="font-size: 0.85rem; opacity: 0.8;">Centennial HS Parent</div>
+                                </div>
+                                <div style="font-weight: 700;">1,250 pts</div>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div class="rank rank-2">2</div>
+                                <div class="user-avatar" style="width: 40px; height: 40px;">TS</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">Tom Smith</div>
+                                    <div style="font-size: 0.85rem; opacity: 0.8;">River Hill Student</div>
+                                </div>
+                                <div style="font-weight: 700;">980 pts</div>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div class="rank rank-3">3</div>
+                                <div class="user-avatar" style="width: 40px; height: 40px;">MJ</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">Maria Johnson</div>
+                                    <div style="font-size: 0.85rem; opacity: 0.8;">Atholton Teacher</div>
+                                </div>
+                                <div style="font-weight: 700;">850 pts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">SafeWalk AI</div>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
+                        Making Howard County schools safer, one route at a time.
+                    </p>
+                    <div style="display: flex; gap: 15px; margin-top: 1rem;">
+                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Data Partners</h3>
+                    <div class="data-partners">
+                        <img src="https://www.howardcountymd.gov/sites/default/files/2021-10/HowardCountySeal_4c.png" 
+                             alt="Howard County" class="partner-logo">
+                        <img src="https://www.hcpss.org/f/images/hcpss-logo.svg" 
+                             alt="HCPSS" class="partner-logo">
+                        <img src="https://www.howardcountymd.gov/sites/default/files/2021-10/MDOT-SHA.png" 
+                             alt="MDOT SHA" class="partner-logo">
+                        <img src="https://www.howardcountymd.gov/sites/default/files/2021-10/HowardCountyPolice.png" 
+                             alt="Howard County Police" class="partner-logo">
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Contact</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem;">
+                        <i class="fas fa-envelope"></i> safety@howardcountyschools.org
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem;">
+                        <i class="fas fa-phone"></i> (410) 313-6600
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.8);">
+                        <i class="fas fa-map-marker-alt"></i> Howard County Public School System
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Hazard Report Modal -->
+    <div class="modal" id="hazardModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Report Safety Concern
+                </h2>
+                <button id="closeHazardModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray);">&times;</button>
+            </div>
+
+            <form id="hazardForm" style="display: flex; flex-direction: column; gap: 1.2rem;">
+                <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Location</label>
+                    <input type="text" id="hazardLocation" class="form-input" 
+                           placeholder="Where is the safety concern?" required>
+                </div>
+
+                <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Type of Concern</label>
+                    <select id="hazardType" class="form-select" required>
+                        <option value="">Select type</option>
+                        <option value="traffic">Heavy Traffic</option>
+                        <option value="crosswalk">Missing/Unsafe Crosswalk</option>
+                        <option value="lighting">Poor Lighting</option>
+                        <option value="sidewalk">Damaged/Missing Sidewalk</option>
+                        <option value="speeding">Speeding Vehicles</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Description</label>
+                    <textarea id="hazardDescription" class="form-input" 
+                              rows="3" placeholder="Please provide details..."></textarea>
+                </div>
+
+                <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Upload Photo (Optional)</label>
+                    <div style="border: 2px dashed #e2e8f0; border-radius: var(--border-radius-sm); padding: 2rem; text-align: center; cursor: pointer;">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--gray); margin-bottom: 10px;"></i>
+                        <div style="color: var(--gray);">Click to upload photo of the concern</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Report
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelHazardReport">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Walk Group Modal -->
+    <div class="modal" id="groupModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-friends"></i>
+                    Join Walking Group
+                </h2>
+                <button id="closeGroupModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray);">&times;</button>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <div style="font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Centennial Lane Walkers</div>
+                <div style="color: var(--gray); margin-bottom: 1rem;">
+                    <i class="fas fa-users"></i> 8 members • <i class="fas fa-clock"></i> 7:30 AM Daily
+                </div>
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: var(--border-radius-sm);">
+                    Meet at Clarksville Pike & Centennial Lane. Walk to Centennial HS together.
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" id="joinGroupBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Join Group
+                </button>
+                <button class="btn btn-secondary" id="createGroupBtn">
+                    <i class="fas fa-plus"></i>
+                    Create New
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== COMPLETE APPLICATION STATE ==========
+        let currentUser = null;
+        let savedRoutes = [];
+        let walkGroups = [];
+        let safetyPoints = 1250;
+        let currentRoute = null;
+
+        // Real Howard County Schools Data
+        const howardCountySchools = [
+            // High Schools
+            { id: "centennial", name: "Centennial High School", type: "High School", address: "4300 Centennial Ln, Ellicott City", students: 1450 },
+            { id: "riverhill", name: "River Hill High School", type: "High School", address: "12101 Clarksville Pike, Clarksville", students: 1320 },
+            { id: "atholton", name: "Atholton High School", type: "High School", address: "6520 Freetown Rd, Columbia", students: 1280 },
+            { id: "hammond", name: "Hammond High School", type: "High School", address: "8800 Guilford Rd, Columbia", students: 1400 },
+            { id: "marriottsridge", name: "Marriotts Ridge High School", type: "High School", address: "12100 Woodford Dr, Marriottsville", students: 1250 },
+            
+            // Middle Schools
+            { id: "mountview", name: "Mount View Middle School", type: "Middle School", address: "12101 Woodford Dr, Marriottsville", students: 850 },
+            { id: "bonniebranch", name: "Bonnie Branch Middle School", type: "Middle School", address: "4979 Ilchester Rd, Ellicott City", students: 920 },
+            { id: "burleighmanor", name: "Burleigh Manor Middle School", type: "Middle School", address: "4200 Centennial Ln, Ellicott City", students: 780 },
+            { id: "clarksville", name: "Clarksville Middle School", type: "Middle School", address: "6535 S Trotter Rd, Clarksville", students: 950 },
+            
+            // Elementary Schools
+            { id: "thunderhill", name: "Thunder Hill Elementary", type: "Elementary School", address: "9357 Mellenbrook Rd, Columbia", students: 450 },
+            { id: "pointersrun", name: "Pointers Run Elementary", type: "Elementary School", address: "6600 S Trotter Rd, Clarksville", students: 520 },
+            { id: "centenniallane", name: "Centennial Lane Elementary", type: "Elementary School", address: "3825 Centennial Ln, Ellicott City", students: 480 },
+            { id: "wintersrun", name: "Winters Run Elementary", type: "Elementary School", address: "1400 Greenway Ct, Ellicott City", students: 420 }
+        ];
+
+        // Sample Students for User
+        const userStudents = [
+            { id: 1, name: "Emily Doe", grade: "10th", school: "Centennial High School", travelMode: "walking" },
+            { id: 2, name: "Michael Doe", grade: "7th", school: "Bonnie Branch Middle School", travelMode: "biking" }
+        ];
+
+        // Sample Walk Groups
+        const sampleWalkGroups = [
+            { id: 1, name: "Centennial Lane Walkers", members: 8, time: "7:30 AM", route: "Clarksville Pike to Centennial HS", leader: "Sarah Johnson" },
+            { id: 2, name: "River Hill Riders", members: 12, time: "7:45 AM", route: "River Hill Village to River Hill HS", leader: "Mike Chen" },
+            { id: 3, name: "Atholton Safety Patrol", members: 15, time: "7:15 AM", route: "Columbia Town Center to Atholton HS", leader: "Principal Davis" },
+            { id: 4, name: "Ellicott City Eagles", members: 6, time: "8:00 AM", route: "Old Columbia Pike to Howard HS", leader: "Lisa Park" }
+        ];
+
+        // Sample Saved Routes
+        const sampleSavedRoutes = [
+            { id: 1, name: "Emily's Morning Walk", from: "10000 Clarksville Pike", to: "Centennial High School", distance: "1.2 miles", time: "25 min", safety: "92%", featured: true, date: "2024-03-15" },
+            { id: 2, name: "Michael's Bike Route", from: "10000 Clarksville Pike", to: "Bonnie Branch Middle School", distance: "0.8 miles", time: "15 min", safety: "88%", featured: false, date: "2024-03-10" },
+            { id: 3, name: "Weekend Library Trip", from: "Home", to: "Miller Branch Library", distance: "2.1 miles", time: "45 min", safety: "85%", featured: false, date: "2024-03-05" }
+        ];
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Set up user
+            currentUser = {
+                name: "Jane Doe",
+                role: "Parent",
+                avatar: "JD",
+                email: "jane.doe@example.com"
+            };
+
+            // Load saved routes
+            savedRoutes = [...sampleSavedRoutes];
+            walkGroups = [...sampleWalkGroups];
+
+            // Initialize UI
+            populateSchoolSelect();
+            populateStudentSelect();
+            populateWalkGroups();
+            loadSavedRoutes();
+            setupEventListeners();
+            updatePointsDisplay();
+
+            // Show welcome animation
+            setTimeout(() => {
+                document.getElementById('mapOverlay').style.display = 'none';
+                showNotification('Welcome back, Jane! 🎒', 'Your daily safety report is ready.');
+            }, 2000);
+        }
+
+        // ========== UI POPULATION FUNCTIONS ==========
+        function populateSchoolSelect() {
+            const select = document.getElementById('schoolSelect');
+            select.innerHTML = '<option value="">Select a school</option>';
+            
+            // Group schools by type
+            const highSchools = howardCountySchools.filter(s => s.type === "High School");
+            const middleSchools = howardCountySchools.filter(s => s.type === "Middle School");
+            const elementarySchools = howardCountySchools.filter(s => s.type === "Elementary School");
+            
+            if (highSchools.length > 0) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = "High Schools";
+                highSchools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school.id;
+                    option.textContent = school.name;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            }
+            
+            if (middleSchools.length > 0) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = "Middle Schools";
+                middleSchools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school.id;
+                    option.textContent = school.name;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            }
+            
+            if (elementarySchools.length > 0) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = "Elementary Schools";
+                elementarySchools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school.id;
+                    option.textContent = school.name;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            }
+        }
+
+        function populateStudentSelect() {
+            const select = document.getElementById('studentSelect');
+            const studentsList = document.getElementById('studentsList');
+            
+            select.innerHTML = '<option value="">Select student</option>';
+            studentsList.innerHTML = '';
+            
+            userStudents.forEach(student => {
+                // Add to dropdown
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} (${student.grade} - ${student.school})`;
+                select.appendChild(option);
+                
+                // Add to sidebar list
+                const studentItem = document.createElement('div');
+                studentItem.className = 'quick-action';
+                studentItem.innerHTML = `
+                    <div class="action-icon" style="background: var(--primary);">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="action-text">
+                        <div class="action-title">${student.name}</div>
+                        <div class="action-desc">${student.grade} • ${student.school}</div>
+                    </div>
+                `;
+                studentsList.appendChild(studentItem);
+            });
+        }
+
+        function populateWalkGroups() {
+            const container = document.getElementById('walkGroupsContainer');
+            container.innerHTML = '';
+            
+            walkGroups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 1.1rem;">${group.name}</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">
+                                ${group.members} members • ${group.time}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="color: var(--gray); margin-bottom: 1rem;">${group.route}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 0.9rem;">
+                            <i class="fas fa-user"></i> Led by ${group.leader}
+                        </div>
+                        <button class="btn btn-sm" style="padding: 8px 15px; background: var(--primary); color: white; border: none; border-radius: var(--border-radius-sm); cursor: pointer;">
+                            Join
+                        </button>
+                    </div>
+                `;
+                container.appendChild(groupCard);
+            });
+        }
+
+        function loadSavedRoutes() {
+            const container = document.getElementById('savedRoutesContainer');
+            container.innerHTML = '';
+            
+            if (savedRoutes.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--gray); grid-column: 1/-1;">
+                        <i class="fas fa-route" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>No saved routes yet</h3>
+                        <p>Plan a safe route and save it for quick access</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            savedRoutes.forEach(route => {
+                const routeCard = document.createElement('div');
+                routeCard.className = `route-card ${route.featured ? 'featured' : ''}`;
+                routeCard.innerHTML = `
+                    <div class="route-header">
+                        <div class="route-name">${route.name}</div>
+                        <div class="route-safety">${route.safety} Safe</div>
+                    </div>
+                    <div class="route-details">
+                        <div class="route-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span><strong>From:</strong> ${route.from}</span>
+                        </div>
+                        <div class="route-detail">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span><strong>To:</strong> ${route.to}</span>
+                        </div>
+                        <div class="route-detail">
+                            <i class="fas fa-route"></i>
+                            <span>${route.distance} • ${route.time}</span>
+                        </div>
+                        <div class="route-detail">
+                            <i class="fas fa-calendar"></i>
+                            <span>Saved on ${new Date(route.date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="route-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="viewRoute(${route.id})">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="startRoute(${route.id})">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-sm btn-warning" onclick="shareRoute(${route.id})">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(routeCard);
+            });
+        }
+
+        // ========== EVENT LISTENERS ==========
+        function setupEventListeners() {
+            // Navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    showView(view);
+                    
+                    // Update active state
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Quick Actions
+            document.getElementById('quickReport').addEventListener('click', () => {
+                showHazardModal();
+            });
+
+            document.getElementById('quickRoute').addEventListener('click', () => {
+                showView('dashboard');
+                document.getElementById('startAddress').focus();
+            });
+
+            document.getElementById('quickGroup').addEventListener('click', () => {
+                showGroupModal();
+            });
+
+            // Map Controls
+            document.getElementById('startExploringBtn').addEventListener('click', () => {
+                document.getElementById('mapOverlay').style.display = 'none';
+            });
+
+            document.getElementById('reportHazardBtn').addEventListener('click', showHazardModal);
+            document.getElementById('walkGroupBtn').addEventListener('click', showGroupModal);
+            document.getElementById('calculateRouteBtn').addEventListener('click', calculateRoute);
+
+            // Location button
+            document.getElementById('locateMeBtn').addEventListener('click', () => {
+                showNotification('Location Updated 📍', 'Using your current location for route planning');
+                document.getElementById('startAddress').value = 'Current Location';
+            });
+
+            // Modal controls
+            document.getElementById('closeHazardModal').addEventListener('click', () => {
+                document.getElementById('hazardModal').classList.remove('active');
+            });
+
+            document.getElementById('closeGroupModal').addEventListener('click', () => {
+                document.getElementById('groupModal').classList.remove('active');
+            });
+
+            document.getElementById('cancelHazardReport').addEventListener('click', () => {
+                document.getElementById('hazardModal').classList.remove('active');
+            });
+
+            // Hazard form submission
+            document.getElementById('hazardForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                reportHazard();
+            });
+
+            // Join group button
+            document.getElementById('joinGroupBtn').addEventListener('click', () => {
+                joinWalkGroup();
+            });
+
+            // Feature cards
+            document.getElementById('aiSafetyFeature').addEventListener('click', () => {
+                showNotification('AI Safety Analysis 🧠', 'Analyzing real-time data for your route...');
+            });
+
+            document.getElementById('walkingBusFeature').addEventListener('click', () => {
+                showGroupModal();
+            });
+
+            document.getElementById('safetyGamesFeature').addEventListener('click', () => {
+                showView('games');
+                showNotification('Safety Games Unlocked! 🎮', 'Earn 50 bonus points for playing today');
+                addPoints(50);
+            });
+
+            document.getElementById('rewardsFeature').addEventListener('click', () => {
+                showNotification('Rewards Program 🎁', 'You have 1,250 points! Visit the rewards page to redeem.');
+            });
+
+            // Feature demo buttons (simulated)
+            document.getElementById('saveRouteBtn').addEventListener('click', () => {
+                saveCurrentRoute();
+            });
+
+            document.getElementById('shareRouteBtn').addEventListener('click', () => {
+                shareCurrentRoute();
+            });
+        }
+
+        // ========== CORE FUNCTIONS ==========
+        function showView(viewName) {
+            // Hide all views
+            document.getElementById('savedRoutesSection').style.display = 'none';
+            document.getElementById('communitySection').style.display = 'none';
+            document.getElementById('gamificationSection').style.display = 'none';
+            
+            // Show requested view
+            switch(viewName) {
+                case 'routes':
+                    document.getElementById('savedRoutesSection').style.display = 'block';
+                    loadSavedRoutes();
+                    break;
+                case 'community':
+                    document.getElementById('communitySection').style.display = 'block';
+                    break;
+                case 'games':
+                    document.getElementById('gamificationSection').style.display = 'block';
+                    break;
+                default:
+                    // Dashboard is already visible
+                    break;
+            }
+        }
+
+        function calculateRoute() {
+            const start = document.getElementById('startAddress').value;
+            const schoolId = document.getElementById('schoolSelect').value;
+            const studentId = document.getElementById('studentSelect').value;
+            
+            if (!start || !schoolId) {
+                showNotification('Please complete all fields ⚠️', 'Select both starting point and destination');
+                return;
+            }
+            
+            const school = howardCountySchools.find(s => s.id === schoolId);
+            
+            // Show loading state
+            showNotification('Calculating safe route... 🔄', 'AI is analyzing real-time safety data');
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                // Generate safety score (85-98%)
+                const safetyScore = Math.floor(Math.random() * 13) + 85;
+                
+                // Update UI
+                document.getElementById('saveRouteBtn').style.display = 'inline-flex';
+                document.getElementById('shareRouteBtn').style.display = 'inline-flex';
+                
+                const safetyDisplay = document.getElementById('safetyScoreDisplay');
+                safetyDisplay.style.display = 'block';
+                safetyDisplay.querySelector('div:first-child div:first-child').textContent = `${safetyScore}%`;
+                
+                // Set current route
+                currentRoute = {
+                    id: Date.now(),
+                    name: studentId ? `${userStudents.find(s => s.id == studentId).name}'s Route` : 'New Route',
+                    from: start,
+                    to: school.name,
+                    distance: (Math.random() * 2 + 0.5).toFixed(1) + ' miles',
+                    time: Math.floor(Math.random() * 20 + 15) + ' min',
+                    safety: `${safetyScore}%`,
+                    date: new Date().toISOString().split('T')[0]
+                };
+                
+                showNotification('Safe route found! ✅', `AI calculated a ${safetyScore}% safe route to ${school.name}`);
+                addPoints(25); // Award points for using AI routing
+            }, 1500);
+        }
+
+        function saveCurrentRoute() {
+            if (!currentRoute) {
+                showNotification('No route to save ⚠️', 'Please calculate a route first');
+                return;
+            }
+            
+            // Add to saved routes
+            savedRoutes.unshift({
+                ...currentRoute,
+                id: Date.now(),
+                featured: savedRoutes.length === 0 // First route is featured
+            });
+            
+            // Save to localStorage (simulated)
+            localStorage.setItem('savedRoutes', JSON.stringify(savedRoutes));
+            
+            // Update UI
+            loadSavedRoutes();
+            showNotification('Route saved! 📍', `${currentRoute.name} has been added to your saved routes`);
+            addPoints(50); // Award points for saving route
+            
+            // Reset
+            currentRoute = null;
+            document.getElementById('saveRouteBtn').style.display = 'none';
+        }
+
+        function showHazardModal() {
+            document.getElementById('hazardModal').classList.add('active');
+        }
+
+        function showGroupModal() {
+            document.getElementById('groupModal').classList.add('active');
+        }
+
+        function reportHazard() {
+            const location = document.getElementById('hazardLocation').value;
+            const type = document.getElementById('hazardType').value;
+            const description = document.getElementById('hazardDescription').value;
+            
+            if (!location || !type) {
+                showNotification('Please complete required fields ⚠️', 'Location and type are required');
+                return;
+            }
+            
+            // In a real app, this would send to server
+            console.log('Hazard reported:', { location, type, description });
+            
+            // Close modal
+            document.getElementById('hazardModal').classList.remove('active');
+            
+            // Reset form
+            document.getElementById('hazardForm').reset();
+            
+            // Show success
+            showNotification('Safety concern reported! 🚨', 'Thank you for making Howard County safer');
+            addPoints(100); // Award points for reporting
+            
+            // Update community alerts
+            updateLiveAlerts(location, type);
+        }
+
+        function joinWalkGroup() {
+            // In a real app, this would update user profile
+            showNotification('Walk group joined! 👥', 'You will receive updates about the Centennial Lane Walkers');
+            addPoints(75); // Award points for joining group
+            
+            // Close modal
+            document.getElementById('groupModal').classList.remove('active');
+        }
+
+        // ========== GAMIFICATION FUNCTIONS ==========
+        function addPoints(points) {
+            safetyPoints += points;
+            updatePointsDisplay();
+            
+            // Check for level up
+            if (safetyPoints % 500 === 0) {
+                showNotification('Level Up! 🎉', `You've earned ${points} points! Keep making Howard County safer!`);
+            }
+        }
+
+        function updatePointsDisplay() {
+            document.getElementById('pointsDisplay').innerHTML = `
+                <i class="fas fa-star"></i>
+                <span>${safetyPoints.toLocaleString()} Points</span>
+            `;
+        }
+
+        function updateLiveAlerts(location, type) {
+            const alertsWidget = document.querySelector('.alerts-widget');
+            const alertItem = document.createElement('div');
+            alertItem.className = 'alert-item';
+            alertItem.innerHTML = `
+                <div class="alert-badge"></div>
+                <div>New: ${type.replace('-', ' ')} at ${location}</div>
+            `;
+            
+            // Add to top of alerts
+            alertsWidget.appendChild(alertItem);
+            
+            // Keep only last 5 alerts
+            const allAlerts = alertsWidget.querySelectorAll('.alert-item');
+            if (allAlerts.length > 5) {
+                allAlerts[0].remove();
+            }
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function showNotification(title, message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 1rem 1.5rem;
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-lg);
+                border-left: 4px solid var(--primary);
+                z-index: 1000;
+                max-width: 350px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="font-weight: 600; color: var(--dark); margin-bottom: 5px;">${title}</div>
+                <div style="color: var(--gray); font-size: 0.9rem;">${message}</div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            /* Additional map marker animations */
+            .map-marker {
+                animation: float 3s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+                50% { transform: translate(-50%, -50%) translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ========== GLOBAL FUNCTIONS FOR BUTTONS ==========
+        window.viewRoute = function(routeId) {
+            const route = savedRoutes.find(r => r.id === routeId);
+            if (route) {
+                showNotification('Route Details', `Viewing ${route.name} - ${route.safety} safety score`);
+                // In a real app, this would show the route on the map
+            }
+        };
+
+        window.startRoute = function(routeId) {
+            const route = savedRoutes.find(r => r.id === routeId);
+            if (route) {
+                showNotification('Route Started 🚶‍♀️', `Navigating to ${route.to}. Safe travels!`);
+                addPoints(10); // Award points for using saved route
+            }
+        };
+
+        window.shareRoute = function(routeId) {
+            const route = savedRoutes.find(r => r.id === routeId);
+            if (route) {
+                showNotification('Route Shared 📤', `${route.name} has been shared with your school community`);
+                addPoints(20); // Award points for sharing
+            }
+        };
+
+        function shareCurrentRoute() {
+            if (currentRoute) {
+                showNotification('Route Shared 📤', `${currentRoute.name} has been shared with your contacts`);
+                addPoints(20);
+            }
+        }
+
+        // Initialize the app when everything is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
